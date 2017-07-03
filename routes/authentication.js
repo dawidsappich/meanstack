@@ -21,8 +21,15 @@ module.exports = (router) => {
 			// save returns a promise
 			user.save((err, entry) => {
 				if (err) {
-					console.log(err);
-					res.json({ success: false, message: 'Could not save user. Error: ', err });
+					switch (err.code) {
+						case 11000:
+							res.json({ success: false, message: 'username or email already exists' });
+							break;
+
+						default:
+							res.json({ success: false, message: 'Error saving user' })
+							break;
+					}
 				} else {
 					res.json({ success: true, message: 'User saved' });
 				}

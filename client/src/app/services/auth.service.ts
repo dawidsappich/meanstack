@@ -7,6 +7,8 @@ import 'rxjs/add/operator/map';
 export class AuthService {
 
   domain: string = 'http://localhost:8080';
+  user;
+  authToken;
 
   constructor(private _http: Http) { }
 
@@ -18,6 +20,17 @@ export class AuthService {
   }
   checkEmail(email) {
     return this._http.get(`${this.domain}/authentication/checkEmail/${email}`).map(res => res.json());
+  }
+
+  storeUserData(token, user) {
+    this.user = user;
+    this.authToken = token;
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  login(user) {
+    return this._http.post(`${this.domain}/authentication/login`, user).map(res => res.json());
   }
 
 }

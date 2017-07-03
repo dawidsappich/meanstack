@@ -6,7 +6,7 @@
 	</div>
 </div>
 
-<form [formGroup]="form" novalidate (submit)="onLoginSubmit()">
+<form [formGroup]="form" (submit)="onLoginSubmit()">
   <div class="form-group">
     <label for="username">Username</label>
 		<div [ngClass]="{'has-error': form.controls.username.errors && form.controls.username.dirty, 'has-success': form.controls.username.valid && form.controls.username.dirtyx }">

@@ -93,5 +93,32 @@ module.exports = (router) => {
 		}
 	});
 
+	// Login
+	router.post('/login', (req, res) => {
+		if (!req.body.username) {
+			res.json({ success: false, message: 'No username provided' });
+		} else if (!req.body.password) {
+			res.json({ success: false, message: 'No password provided' });
+		} else {
+			// search user in DB
+			User.findOne({ username: req.body.username.toLowerCase() }, (err, user) => {
+				if (err) {res.json({success:false,message:'Username not found'});
+					res.json({ success: false, message: err });
+				} else {
+					if (!user) {
+						res.json({success:false,message:'Username not found'});
+					} else {
+						const validPassword = user.comparePasswords(req.body.password);
+						if (!validPassword) {
+							res.json({ success: false, messages: 'Password does not match' });
+						} else {
+							res.json({ success: true, messages: 'Success' });
+						}
+					}
+				}
+			})
+		}
+	})
+
 	return router
 }

@@ -104,7 +104,7 @@ userschema.pre('save', function (next) {
 /**
  * decrypt password
  */
-userschema.methods.comparePasswords = password => {
+userschema.methods.comparePasswords = function (password) {
 	return bcrypt.compareSync(password, this.password);
 }
 

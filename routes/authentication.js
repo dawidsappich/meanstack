@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
+const config = require('../config/database');
 
 module.exports = (router) => {
 	// do something
@@ -102,18 +104,21 @@ module.exports = (router) => {
 		} else {
 			// search user in DB
 			User.findOne({ username: req.body.username.toLowerCase() }, (err, user) => {
-				if (err) {res.json({success:false,message:'Username not found'});
+				if (err) {
+					res.json({ success: false, message: 'Username not found' });
 					res.json({ success: false, message: err });
 				} else {
 					if (!user) {
-						res.json({success:false,message:'Username not found'});
+						res.json({ success: false, message: 'Username not found' });
 					} else {
 						// compare password wirh entry in db
 						const validPassword = user.comparePasswords(req.body.password);
 						if (!validPassword) {
 							res.json({ success: false, messages: 'Password does not match' });
 						} else {
-							res.json({ success: true, messages: 'Success' });
+							// encrypt userid
+							const token = jwt.sign({ userId: user._id }, config.secret, { expiresIn: '24h' });
+							res.json({ success: true, messages: 'Success', token: token, user: { username: user.username } });
 						}
 					}
 				}

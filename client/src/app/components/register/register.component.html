@@ -1,5 +1,12 @@
 <h1 class="page-header">Register</h1>
 
+<div class="row show-hide-message">
+	<div [ngClass]="messageClass">
+		{{ message }}
+	</div>
+</div>
+
+
 <form [formGroup]="form" novalidate (submit)="onSubmitForm()">
 	<div class="form-group">
 		<label for="username">Username</label>
@@ -47,5 +54,5 @@
 			</ul>
 		</div>
 	</div>
-	<input [disabled]="!form.valid" type="submit" class="btn btn-primary" value="Submit">
+	<input [disabled]="!form.valid || processing" type="submit" class="btn btn-primary" value="Submit">
 </form>

@@ -6,6 +6,7 @@ const config = require('./config/database');
 const path = require('path');
 const bodyparser = require('body-parser');
 const auth = require('./routes/authentication')(router);
+const cors = require('cors');
 
 const PORT = 8080;
 
@@ -23,6 +24,12 @@ mongoose.connect(config.uri, /*{ useMongoClient: true },*/ err => {
 // middleware for parsing incoming requests
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
+// ONLY FOR DEVELOPMENT
+// allow CORS
+app.use(cors({
+	origin: 'http://localhost:4200'
+}))
+console.log('!!!!!! CORS is allowed for localhost:4200 REMOVE before deployment !!!!!!!!');
 // setup folder for static content
 app.use(express.static(__dirname + '/client/dist/'));
 

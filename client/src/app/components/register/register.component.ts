@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +12,11 @@ export class RegisterComponent implements OnInit {
   form: FormGroup;
   debug: boolean = false;
 
-  constructor(private _fb: FormBuilder) {
+  message: string;
+  messageClass: string;
+  processing: boolean = false;
+
+  constructor(private _fb: FormBuilder, private _auth: AuthService) {
     this.createForm();
   }
 
@@ -37,12 +42,30 @@ export class RegisterComponent implements OnInit {
         Validators.minLength(8),
         Validators.maxLength(20)
       ])],
-      confirm: ['', Validators.required ]
+      confirm: ['', Validators.required]
     }, { validator: this.matchingPasswords('password', 'confirm') })
   }
 
   onSubmitForm() {
-    console.log(this.form.controls);
+    this.processing = true;
+    this.disableForm();
+    const user = {
+      username: this.form.get('username').value,
+      email: this.form.get('email').value,
+      password: this.form.get('password').value
+    }
+
+    this._auth.registerUser(user).subscribe(data => {
+      this.message = data.message;
+      if (!data.success) {
+        this.enableForm()
+        this.messageClass = 'alert alert-danger';
+        this.processing = false;
+      } else {
+        this.messageClass = 'alert alert-success';
+      }
+
+    })
   }
 
   validateEmail(controls) {
@@ -59,6 +82,20 @@ export class RegisterComponent implements OnInit {
     return (group: FormGroup) => {
       return (group.controls[password].value === group.controls[confirm].value) ? null : { notMatchingPasswords: true };
     }
+  }
+
+  enableForm() {
+    this.form.controls['email'].enable();
+    this.form.controls['username'].enable();
+    this.form.controls['password'].enable();
+    this.form.controls['confirm'].enable();
+  }
+
+  disableForm() {
+    this.form.controls['email'].disable();
+    this.form.controls['username'].disable();
+    this.form.controls['password'].disable();
+    this.form.controls['confirm'].disable();
   }
 
 }

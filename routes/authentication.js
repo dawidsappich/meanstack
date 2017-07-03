@@ -31,6 +31,9 @@ module.exports = (router) => {
 							// incvalid username
 						} else if (err.errors.username) {
 							res.json({ success: false, message: err.errors.username.message });
+							// invlaid password
+						} else if (err.errors.password) {
+							res.json({ success: false, message: err.errors.password.message });
 						} else {
 							res.json({ success: false, message: err });
 						}

@@ -23,6 +23,15 @@ let usernameLengthChecker = (username) => {
 		return true;
 	}
 }
+let passwordLengthChecker = (password) => {
+	if (!password) {
+		return false;
+	} else if (password.length < 8 || password.length > 20) {
+		return false;
+	} else {
+		return true;
+	}
+}
 
 let validEmailChecker = (email) => {
 	if (!email) {
@@ -40,6 +49,14 @@ let validUsernameChecker = (username) => {
 		return regex.test(username);
 	}
 }
+let validPasswordChecker = (password) => {
+	if (!password) {
+		return false;
+	} else {
+		const regex = new RegExp(/^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/);
+		return regex.test(password);
+	}
+}
 
 // Validators
 const emailValidators = [
@@ -50,12 +67,16 @@ const usernameValidators = [
 	{ validator: usernameLengthChecker, message: 'Username must be at least 3 characters but no more than 20' },
 	{ validator: validUsernameChecker, message: 'Username ist not a valid' }
 ]
+const passwordValidators = [
+	{ validator: passwordLengthChecker, message: 'Password must be at least 8 characters but no more than 20' },
+	{ validator: validPasswordChecker, message: 'Password ist not a valid' }
+]
 
 // schema
 const userschema = new Schema({
 	email: { type: String, required: true, unique: true, lowercase: true, validate: emailValidators },
 	username: { type: String, required: true, unique: true, lowercase: true, validate: usernameValidators },
-	password: { type: String, required: true }
+	password: { type: String, required: true, validate: passwordValidators }
 })
 
 /**

@@ -1,14 +1,18 @@
 const express = require('express');
 const app = express();
+const router = express.Router();
 const mongoose = require('mongoose');
 const config = require('./config/database');
 const path = require('path');
+const bodyparser = require('body-parser');
+const auth = require('./routes/authentication')(router);
 
 const PORT = 8080;
 
-// setup provider for mongoose promises
+// Use native promises
 mongoose.Promise = global.Promise;
-mongoose.connect(config.uri, { useMongoClient: true }, err => {
+// connect to mongodb
+mongoose.connect(config.uri, /*{ useMongoClient: true },*/ err => {
 	if (err) {
 		console.log(`Could not connect to mongodb: ${err}`)
 	} else {
@@ -16,8 +20,13 @@ mongoose.connect(config.uri, { useMongoClient: true }, err => {
 	}
 })
 
+// middleware for parsing incoming requests
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: false }));
 // setup folder for static content
-app.use(express.static(__dirname + '/client/dist'));
+app.use(express.static(__dirname + '/client/dist/'));
+
+app.use('/authentication', auth);
 
 // Routing
 app.get('/', (req, res) => {

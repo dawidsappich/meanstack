@@ -9,7 +9,10 @@
   "author": "Dawid Sappich",
   "license": "ISC",
   "dependencies": {
+    "@types/mongoose": "^4.7.18",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.2",
     "express": "^4.15.3",
-    "mongoose": "^4.11.0"
+    "mongoose": "^4.10.8"
   }
 }

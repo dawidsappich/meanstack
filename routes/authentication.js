@@ -108,6 +108,7 @@ module.exports = (router) => {
 					if (!user) {
 						res.json({success:false,message:'Username not found'});
 					} else {
+						// compare password wirh entry in db
 						const validPassword = user.comparePasswords(req.body.password);
 						if (!validPassword) {
 							res.json({ success: false, messages: 'Password does not match' });

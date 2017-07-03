@@ -41,14 +41,57 @@ module.exports = (router) => {
 						res.json({ success: false, message: err });
 					}
 				} else {
-					res.json({ success: true, message: 'User saved' })
+					res.json({ success: true, message: 'Account registered' })
 				}
 			})
-				.then(() => console.log('User saved'))
-				.catch(() => console.log('Error saving user'));
+				.then(() => console.log('Account registered'))
+				.catch(() => console.log('Error registering account'));
 
-			// res.json({ success: true, message: 'request completed' });
 		}
 	})
+
+	router.get('/checkEmail/:email', (req, res) => {
+		// if no email
+		if (!req.params.email) {
+			res.json({ success: false, message: 'Email ist not provided' });
+		} else {
+			// search for email in collection users
+			User.findOne({ email: req.params.email }, (err, doc) => {
+				if (err) {
+					res.json({ success: false, message: err });
+				} else {
+					// found a document in collection users
+					if (doc) {
+						res.json({ success: false, message: 'Email is already taken' });
+					} else {
+						res.json({ success: true, message: 'Email is available' });
+					}
+				}
+			})
+		}
+	});
+
+
+	router.get('/checkUsername/:username', (req, res) => {
+		// if no email
+		if (!req.params.username) {
+			res.json({ success: false, message: 'Username ist not provided' });
+		} else {
+			// search for email in collection users
+			User.findOne({ username: req.params.username }, (err, doc) => {
+				if (err) {
+					res.json({ success: false, message: err });
+				} else {
+					// found a document in collection users
+					if (doc) {
+						res.json({ success: false, message: 'Username is already taken' });
+					} else {
+						res.json({ success: true, message: 'Username is available' });
+					}
+				}
+			})
+		}
+	});
+
 	return router
 }

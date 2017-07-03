@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -16,7 +17,13 @@ export class RegisterComponent implements OnInit {
   messageClass: string;
   processing: boolean = false;
 
-  constructor(private _fb: FormBuilder, private _auth: AuthService) {
+  isEmailValid: boolean = false;
+  isEmailValidMessage: string;
+
+  isUsernameValid: boolean = false;
+  isUsernameValidMessage: string;
+
+  constructor(private _fb: FormBuilder, private _auth: AuthService, private _router: Router) {
     this.createForm();
   }
 
@@ -63,6 +70,10 @@ export class RegisterComponent implements OnInit {
         this.processing = false;
       } else {
         this.messageClass = 'alert alert-success';
+        // if successful then redirect to login view
+        setTimeout(() => {
+          this._router.navigate(['/login']);
+        }, 2000)
       }
 
     })
@@ -97,5 +108,21 @@ export class RegisterComponent implements OnInit {
     this.form.controls['password'].disable();
     this.form.controls['confirm'].disable();
   }
+
+  checkEmail() {
+    this._auth.checkEmail(this.form.get('email').value).subscribe(data => {
+      this.isEmailValidMessage = data.message;
+      this.isEmailValid = !data.success ? false : true;
+    })
+  }
+
+
+  checkUsername() {
+    this._auth.checkUsername(this.form.get('username').value).subscribe(data => {
+      this.isUsernameValidMessage = data.message;
+      this.isUsernameValid = !data.success ? false : true;
+    })
+  }
+
 
 }

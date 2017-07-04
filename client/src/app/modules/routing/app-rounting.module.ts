@@ -5,8 +5,9 @@ import { DashboardComponent } from '../../components/dashboard/dashboard.compone
 import { RegisterComponent } from '../../components/register/register.component'
 import { LoginComponent } from "../../components/login/login.component";
 import { ProfileComponent } from "../../components/profile/profile.component";
-import { AuthGuradService  } from '../../guards/auth.guard';
-import { NoAuthGuradService  } from '../../guards/noauth.guard';
+import { AuthGuradService } from '../../guards/auth.guard';
+import { NoAuthGuradService } from '../../guards/noauth.guard';
+import { BlogComponent } from '../../components/blog/blog.component';
 
 
 const appRoutes: Routes = [
@@ -36,6 +37,11 @@ const appRoutes: Routes = [
 	{
 		path: 'profile',
 		component: ProfileComponent,
+		canActivate: [AuthGuradService]
+	},
+	{
+		path: 'blog',
+		component: BlogComponent,
 		canActivate: [AuthGuradService]
 	},
 	{ path: '**', component: HomeComponent }

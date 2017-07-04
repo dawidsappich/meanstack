@@ -1,0 +1,80 @@
+<h1 class="" page-header>Blog Feed</h1>
+
+<!--<div class="row show-hide-message">
+  <div [ngClass]="messageClass">
+    {{ message }}
+  </div>
+</div>-->
+
+<button [disabled]="loadingBlog" *ngIf="!newPost" (click)="newBlogForm()" type="button" name="button" class="btn btn-warning">New Post</button>
+<button [disabled]="loadingBlog" *ngIf="!newPost" (click)="reloadBlogs()" type="button" name="button" class="btn btn-default"><span class="glyphicon glyphicon-repeat"></span>&nbsp;&nbsp;Reload</button>
+
+<div *ngIf="!newPost">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Title</h3>
+    </div>
+    <div class="panel-body">
+      Lorem ipsum dolor sit amet, ei natum fabellas oporteat his, no meliore feugait cum, duo blandit vulputate at. Latine scribentur
+      dissentiunt sed ex. Per id consul facete. Regione detracto principes sit ei, eam in brute verear, usu vide sale mucius
+      ea. An diam quaeque mandamus nam, ea oporteat inimicus est. Percipit explicari et sed.
+    </div>
+
+
+    <!--FOOTER START-->
+    <div class="panel-footer">
+      <p><strong>Posted by: </strong>Dawid Sappich</p>
+      <p><strong>Date: </strong>01.01.1900</p>
+      <div>
+        <p><strong>Likes: </strong>99</p>
+        <p><strong>Dislikes: </strong>11</p>
+      </div>
+      <a href="#"><button type="button" class="btn btn-sm btn-info">Edit</button></a>
+      <a href="#"><button type="button" class="btn btn-sm btn-danger">Delete</button></a>
+
+
+      <!--LIKES DROPDOWN START-->
+      <div class="dropdown">
+        <button type="button" class="btn btn-sm btn-success">
+          <span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;&nbsp;Likes: 11
+        </button>
+        <div class="dropdown-content">
+          <a href="#">dawid</a>
+          <a href="#">Hans</a>
+          <a href="#">Peter</a>
+        </div>
+      </div>
+      <!--LIKES DROPDOWN END-->
+
+
+      <!--DISLIKES DROPDOWN START-->
+      <div class="dropdown">
+        <button type="button" class="btn btn-sm btn-warning">
+          <span class="glyphicon glyphicon-thumbs-down"></span>&nbsp;&nbsp;Dislikes: 11
+        </button>
+        <div class="dropdown-content">
+          <a href="#">dawid</a>
+          <a href="#">Hans</a>
+          <a href="#">Peter</a>
+        </div>
+      </div>
+      <!--DISLIKES DROPDOWN END-->
+    </div>
+    <!--FOOTER END-->
+
+    <!--COMMENT SECTION-->
+    <ul class="list-group">
+      <li class="list-group-item">
+        <button (click)="draftComment()" class="btn btn-sm btn-danger" type="button">Post Comment</button>
+        <br>
+        <!--<form>
+          <textarea name="name" rows="10" cols="30" class="" form-control></textarea>
+          <button type="button" class="btn btn-sm btn-info">Submit Post</button>
+          <button type="button" class="btn btn-sm btn-danger">Cancel</button>
+        </form>-->
+      </li>
+    </ul>
+
+
+  </div>
+</div>

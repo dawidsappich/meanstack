@@ -19,6 +19,7 @@ import { NoAuthGuradService } from './guards/noauth.guard';
 
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
+import { BlogComponent } from './components/blog/blog.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
     NavbarComponent,
     DashboardComponent,
     LoginComponent,
-    ProfileComponent
+    ProfileComponent,
+    BlogComponent
   ],
   imports: [
     BrowserModule,

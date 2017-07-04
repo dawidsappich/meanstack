@@ -34,6 +34,12 @@ export class AuthService {
     return this._http.post(`${this.domain}/authentication/login`, user).map(res => res.json());
   }
 
+  logout() {
+    this.user = null;
+    this.authToken = null;
+    localStorage.clear();
+  }
+
   createAuthHeaders() {
     this.loadToken();
     this.options = new RequestOptions({

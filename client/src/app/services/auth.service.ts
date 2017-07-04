@@ -8,7 +8,8 @@ export class AuthService {
 
   domain: string = 'http://localhost:8080';
   user;
-  authToken;
+  authToken: string;
+  options: RequestOptions;
 
   constructor(private _http: Http) { }
 
@@ -31,6 +32,28 @@ export class AuthService {
 
   login(user) {
     return this._http.post(`${this.domain}/authentication/login`, user).map(res => res.json());
+  }
+
+  createAuthHeaders() {
+    this.loadToken();
+    this.options = new RequestOptions({
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'authorisation': this.authToken
+      })
+    })
+  }
+
+  /**
+   * Load token from localStorage (Browser)
+   */
+  loadToken() {
+    this.authToken = localStorage.getItem('token');
+  }
+
+  getProfile() {
+    this.createAuthHeaders();
+    return this._http.get(`${this.domain}/authentication/profile`, this.options).map(res => res.json());
   }
 
 }

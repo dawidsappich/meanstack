@@ -114,16 +114,60 @@ module.exports = (router) => {
 						// compare password wirh entry in db
 						const validPassword = user.comparePasswords(req.body.password);
 						if (!validPassword) {
-							res.json({ success: false, messages: 'Password does not match' });
+							res.json({ success: false, message: 'Password does not match' });
 						} else {
 							// encrypt userid
 							const token = jwt.sign({ userId: user._id }, config.secret, { expiresIn: '24h' });
-							res.json({ success: true, messages: 'Success', token: token, user: { username: user.username } });
+							res.json({ success: true, message: 'Success', token: token, user: { username: user.username } });
 						}
 					}
 				}
 			})
 		}
+	});
+
+	/**
+	 * Middleware um den user-Token aus dem Header zu extrahieren
+	 * Alle nachfolgenden router-Definitionen benötigen diesen user-Token
+	 * als Zeichen dafür das der User authentifiziert und authorisiert ist
+	 * Ist der token gültig wird er in req.decoded gespeichert und ist allen
+	 * nachfolgenden Routerdefinitionen verfügbar
+	 */
+	router.use((req, res, next) => {
+		const token = req.headers['authorisation'];
+		if (!token) {
+			res.json({ success: false, message: 'No token provided' });
+		} else {
+			// verifizieren des token mit Hilfe von config.secret
+			// mit config.secret wurde das token ursprüglich erstellt
+			jwt.verify(token, config.secret, (err, decoded) => {
+				if (err) {
+					res.json({ success: false, message: 'Token is invalid. Error: ' + err });
+				} else {
+					req.decoded = decoded;
+					// die verarbeitung an die nächte stufe weitergeben
+					next();
+				}
+			})
+		}
+	})
+
+	// profile
+	router.get('/profile', (req, res) => {
+
+		// find username and password
+		User.findOne({ _id: req.decoded.userId }).select('username email').exec((err, user) => {
+			if (err) {
+				res.json({ success: true, message: err });
+			} else {
+				if (!user) {
+					res.json({ success: false, message: 'User not found' });
+				} else {
+					res.json({ success: true, user: user });
+				}
+			}
+		})
+
 	})
 
 	return router

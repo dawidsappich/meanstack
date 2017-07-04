@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AuthService } from "../../services/auth.service";
+import { AuthGuradService } from "../../guards/auth.guard";
 import { Router } from "@angular/router";
 
 @Component({
@@ -14,12 +15,20 @@ export class LoginComponent implements OnInit {
   messageClass: string;
   processing: boolean = false;
   form: FormGroup;
+  prevoiusUrl: string;
 
-  constructor(private _fb: FormBuilder, private authServie: AuthService, private router: Router) {
+  constructor(private _fb: FormBuilder, private authServie: AuthService, private router: Router, private authguard: AuthGuradService) {
     this.createForm();
   }
 
   ngOnInit() {
+    if (this.authguard.redirectUrl) {
+      this.message = 'You must be logged in to view that page';
+      this.messageClass = 'alert alert-danger';
+      this.prevoiusUrl = this.authguard.redirectUrl;
+      // clear state for redirectUrl
+      this.authguard.redirectUrl = undefined;
+    }
   }
 
   onLoginSubmit() {
@@ -39,7 +48,15 @@ export class LoginComponent implements OnInit {
         this.messageClass = 'alert alert-success';
         this.authServie.storeUserData(data.token, data.user);
         setTimeout(() => {
-          this.router.navigate(['/dashboard']);
+
+          // wollte der User ursprunglich auf eine andere Seite?
+          if (this.prevoiusUrl) {
+            // wenn ja, dann dahin navigieren
+            this.router.navigate([this.prevoiusUrl]);
+          } else {
+            // ansonsten zum dashboard navigieren
+            this.router.navigate(['/dashboard']);
+          }
         }, 2000)
       }
     })

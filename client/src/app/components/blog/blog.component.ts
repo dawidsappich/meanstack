@@ -16,6 +16,7 @@ export class BlogComponent implements OnInit {
   form: FormGroup;
   processing: boolean = false;
   username: string;
+  blogPosts;
 
   message;
   messageClass;
@@ -27,7 +28,8 @@ export class BlogComponent implements OnInit {
   ngOnInit() {
     this.authService.getProfile().subscribe(profile => {
       this.username = profile.user.username;
-    })
+    });
+    this.getAllBlogs();
   }
 
   createNewForm() {
@@ -101,6 +103,8 @@ export class BlogComponent implements OnInit {
         this.enableNewBlogForm();
       } else {
         this.messageClass = 'alert alert-success';
+        // auch den gerade abgespeicherten post zurückgeben lassen
+        this.getAllBlogs();
         setTimeout(() => {
           this.newPost = false;
           this.processing = false;
@@ -114,6 +118,12 @@ export class BlogComponent implements OnInit {
 
   goBack() {
     window.location.reload();
+  }
+
+  getAllBlogs() {
+    this.blogService.getAllBlogs().subscribe(data => {
+      this.blogPosts = data.blogs;
+    })
   }
 
 }

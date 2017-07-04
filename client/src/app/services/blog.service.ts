@@ -22,7 +22,12 @@ export class BlogService {
 
   newBlog(blog) {
     this.createAuthHeaders();
-    return this.http.post(`${this.domain}/blog/newBlog`, blog, this.options).map(blog => blog.json());
+    return this.http.post(`${this.domain}/blog/newBlog`, blog, this.options).map(res => res.json());
+  }
+
+  getAllBlogs() {
+    this.createAuthHeaders();
+    return this.http.get(`${this.domain}/blog/allBlogs`, this.options).map(res => res.json());
   }
 
 }

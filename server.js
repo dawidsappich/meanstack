@@ -6,6 +6,7 @@ const config = require('./config/database');
 const path = require('path');
 const bodyparser = require('body-parser');
 const auth = require('./routes/authentication')(router);
+const blog = require('./routes/blog')(router);
 const cors = require('cors');
 
 const PORT = 8080;
@@ -34,6 +35,7 @@ console.log('!!!!!! CORS is allowed for localhost:4200 REMOVE before deployment 
 app.use(express.static(__dirname + '/client/dist/'));
 
 app.use('/authentication', auth);
+app.use('/blog', blog);
 
 // Routing
 app.get('/', (req, res) => {

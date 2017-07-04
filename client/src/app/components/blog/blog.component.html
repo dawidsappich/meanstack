@@ -48,33 +48,34 @@
 <!--New Blog Form-->
 
 <div *ngIf="!newPost">
-  <div class="panel panel-primary">
+  <div *ngFor="let blog of blogPosts" class="panel panel-primary">
     <div class="panel-heading">
-      <h3 class="panel-title">Title</h3>
+      <h3 class="panel-title">{{ blog.title }}</h3>
     </div>
-    <div class="panel-body">
-      Lorem ipsum dolor sit amet, ei natum fabellas oporteat his, no meliore feugait cum, duo blandit vulputate at. Latine scribentur
-      dissentiunt sed ex. Per id consul facete. Regione detracto principes sit ei, eam in brute verear, usu vide sale mucius
-      ea. An diam quaeque mandamus nam, ea oporteat inimicus est. Percipit explicari et sed.
-    </div>
+    <div class="panel-body">{{ blog.body }}</div>
 
 
     <!--FOOTER START-->
     <div class="panel-footer">
-      <p><strong>Posted by: </strong>Dawid Sappich</p>
-      <p><strong>Date: </strong>01.01.1900</p>
-      <div>
-        <p><strong>Likes: </strong>99</p>
-        <p><strong>Dislikes: </strong>11</p>
+      <p><strong>Posted by: </strong>{{ blog.createdBy }}</p>
+      <p><strong>Date: </strong>{{ blog.createdAt | date:'dd.MM.yyyy' }}</p>
+
+      <div *ngIf="blog.createdBy === username">
+        <p><strong>Likes: </strong>{{ blog.likes }}</p>
+        <p><strong>Dislikes: </strong>{{ blog.dislikes }}</p>
       </div>
-      <a href="#"><button type="button" class="btn btn-sm btn-info">Edit</button></a>
-      <a href="#"><button type="button" class="btn btn-sm btn-danger">Delete</button></a>
+      <!--Edit Post-->
+      <!--Nur anzeigen wenn der Post von dem User erstellt ist-->
+      <a *ngIf="blog.createdBy === username" [routerLink]="['/editBlog/, blog._id']"><button type="button" class="btn btn-sm btn-info">Edit</button></a>
+      <!--Delete Post-->
+      <!--Nur anzeigen wenn der Post von dem User erstellt ist-->
+      <a *ngIf="blog.createdBy === username" [routerLink]="['/deleteBlog/, blog._id']"><button type="button" class="btn btn-sm btn-danger">Delete</button></a>
 
 
       <!--LIKES DROPDOWN START-->
       <div class="dropdown">
-        <button type="button" class="btn btn-sm btn-success">
-          <span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;&nbsp;Likes: 11
+        <button *ngIf="blog.createdBy !== username" type="button" class="btn btn-sm btn-success">
+          <span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;&nbsp;Likes: {{ blog.likes }}
         </button>
         <div class="dropdown-content">
           <a href="#">dawid</a>
@@ -87,8 +88,8 @@
 
       <!--DISLIKES DROPDOWN START-->
       <div class="dropdown">
-        <button type="button" class="btn btn-sm btn-warning">
-          <span class="glyphicon glyphicon-thumbs-down"></span>&nbsp;&nbsp;Dislikes: 11
+        <button *ngIf="blog.createdBy !== username" type="button" class="btn btn-sm btn-warning">
+          <span class="glyphicon glyphicon-thumbs-down"></span>&nbsp;&nbsp;Dislikes: {{ blog.dislikes }}
         </button>
         <div class="dropdown-content">
           <a href="#">dawid</a>

@@ -74,7 +74,7 @@ export class BlogComponent implements OnInit {
 
   reloadBlogs() {
     this.loadingBlog = true;
-    // TODO: Get all blogs
+    this.getAllBlogs();
     setTimeout(() => {
       this.loadingBlog = false;
     }, 4000)

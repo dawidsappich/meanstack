@@ -9,6 +9,42 @@
 <button [disabled]="loadingBlog" *ngIf="!newPost" (click)="newBlogForm()" type="button" name="button" class="btn btn-warning">New Post</button>
 <button [disabled]="loadingBlog" *ngIf="!newPost" (click)="reloadBlogs()" type="button" name="button" class="btn btn-default"><span class="glyphicon glyphicon-repeat"></span>&nbsp;&nbsp;Reload</button>
 
+<!--New Blog Form-->
+<form *ngIf="newPost" [formGroup]="form" (submit)="onBlogSubmit()">
+  <!--title input-->
+  <div class="form-group">
+    <label for="title">Title</label>
+    <div [ngClass]="{'has-success': form.controls.title.valid, 'has-error':form.controls.title.dirty && form.controls.title.errors}">
+      <input class="form-control" type="text" name="title" placeholder="Title" autocomplete="off" formControlName="title">
+      <ul class="help-block">
+        <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.required">This is field required</li>
+        <li *ngIf="(form.controls.title.dirty && form.controls.title.errors?.minlength) || (form.controls.title.dirty && form.controls.title.errors?.maxlength)">Min. length 5, Max. length: 50</li>
+        <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.isNotAlphanumeric">Must be letter or number</li>
+      </ul>
+    </div>
+  </div>
+  <!--title input-->
+
+
+  <!--body input-->
+  <div class="form-group">
+    <label for="body">Body</label>
+    <div [ngClass]="{'has-success': form.controls.body.valid, 'has-error':form.controls.body.dirty && form.controls.body.errors}">
+      <textarea name="body" formControlName="body" placeholder="Text" rows="10" cols="50" class="form-control"></textarea>
+      <ul class="help-block">
+        <li *ngIf="form.controls.body.dirty && form.controls.body.errors?.required">This is field required</li>
+        <li *ngIf="(form.controls.body.dirty && form.controls.body.errors?.minlength) || (form.controls.body.dirty && form.controls.body.errors?.maxlength)">Min. length 5, Max. length: 500</li>
+      </ul>
+    </div>
+  </div>
+  <!--body input-->
+
+  <button [disabled]="processing" (click)="goBack()" type="button" class="btn btn-default">Go Back</button>
+  <button [disabled]="!form.valid || processing" type="submit" class="btn btn-primary">Submit</button>
+
+</form>
+<!--New Blog Form-->
+
 <div *ngIf="!newPost">
   <div class="panel panel-primary">
     <div class="panel-heading">

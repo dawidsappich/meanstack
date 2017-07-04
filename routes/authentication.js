@@ -133,24 +133,24 @@ module.exports = (router) => {
 	 * Ist der token gültig wird er in req.decoded gespeichert und ist allen
 	 * nachfolgenden Routerdefinitionen verfügbar
 	 */
-	// router.use((req, res, next) => {
-	// 	const token = req.headers['authorisation'];
-	// 	if (!token) {
-	// 		res.json({ success: false, message: 'No token provided' });
-	// 	} else {
-	// 		// verifizieren des token mit Hilfe von config.secret
-	// 		// mit config.secret wurde das token ursprüglich erstellt
-	// 		jwt.verify(token, config.secret, (err, decoded) => {
-	// 			if (err) {
-	// 				res.json({ success: false, message: 'Token is invalid. Error: ' + err });
-	// 			} else {
-	// 				req.decoded = decoded;
-	// 				// die verarbeitung an die nächte stufe weitergeben
-	// 				next();
-	// 			}
-	// 		})
-	// 	}
-	// })
+	router.use((req, res, next) => {
+		const token = req.headers['authorisation'];
+		if (!token) {
+			res.json({ success: false, message: 'No token provided' });
+		} else {
+			// verifizieren des token mit Hilfe von config.secret
+			// mit config.secret wurde das token ursprüglich erstellt
+			jwt.verify(token, config.secret, (err, decoded) => {
+				if (err) {
+					res.json({ success: false, message: 'Token is invalid. Error: ' + err });
+				} else {
+					req.decoded = decoded;
+					// die verarbeitung an die nächte stufe weitergeben
+					next();
+				}
+			})
+		}
+	})
 
 	// profile
 	router.get('/profile', (req, res) => {

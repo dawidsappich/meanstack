@@ -12,6 +12,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthService } from './services/auth.service';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { AuthGuradService } from './guards/auth.guard';
+import { NoAuthGuradService } from './guards/noauth.guard';
+
 
 
 import { ModalModule } from 'angular2-modal';
@@ -35,7 +38,7 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
     ModalModule.forRoot(),
     BootstrapModalModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuradService, NoAuthGuradService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

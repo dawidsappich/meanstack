@@ -12,21 +12,21 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private _autheService: AuthService, private _router: Router, public modal: Modal) { }
+  constructor(private authService: AuthService, private _router: Router, public modal: Modal) { }
 
   ngOnInit() {
   }
 
   onLogout() {
-    this._autheService.logout();
-     this.modal.alert()
-        .size('lg')
-        .showClose(true)
-        .title('Information')
-        .body(`
+    this.authService.logout();
+    this.modal.alert()
+      .size('lg')
+      .showClose(true)
+      .title('Information')
+      .body(`
             <h4>Logout</h4>
             <p>You have been locked out</p>`)
-        .open();
+      .open();
   }
 
 }

@@ -6,8 +6,10 @@
   </div>
 </div>
 
-<button [disabled]="loadingBlog" *ngIf="!newPost" (click)="newBlogForm()" type="button" name="button" class="btn btn-warning">New Post</button>
-<button [disabled]="loadingBlog" *ngIf="!newPost" (click)="reloadBlogs()" type="button" name="button" class="btn btn-default"><span class="glyphicon glyphicon-repeat"></span>&nbsp;&nbsp;Reload</button>
+<div>
+  <button [disabled]="loadingBlog" *ngIf="!newPost" (click)="newBlogForm()" type="button" name="button" class="btn btn-warning">New Post</button>
+  <button [disabled]="loadingBlog" *ngIf="!newPost" (click)="reloadBlogs()" type="button" name="button" class="btn btn-default"><span class="glyphicon glyphicon-repeat"></span>&nbsp;&nbsp;Reload</button>
+</div>
 
 <!--New Blog Form-->
 <form *ngIf="newPost" [formGroup]="form" (submit)="onBlogSubmit()">

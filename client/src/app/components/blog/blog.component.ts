@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
+import { BlogService } from "../../services/blog.service";
 
 
 @Component({
@@ -19,9 +20,9 @@ export class BlogComponent implements OnInit {
   message;
   messageClass;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private blogService: BlogService) {
     this.createNewForm();
-   }
+  }
 
   ngOnInit() {
     this.authService.getProfile().subscribe(profile => {
@@ -91,7 +92,24 @@ export class BlogComponent implements OnInit {
       createdBy: this.username
     }
 
-    console.log(blog);
+    this.blogService.newBlog(blog).subscribe(data => {
+      this.message = data.message;
+      if (!data.success) {
+        this.messageClass = 'alert alert-danger';
+        // schlater für das formular umschwitchen und Form wieder aktiveren
+        this.processing = false;
+        this.enableNewBlogForm();
+      } else {
+        this.messageClass = 'alert alert-success';
+        setTimeout(() => {
+          this.newPost = false;
+          this.processing = false;
+          this.message = false;
+          this.form.reset();
+          this.enableNewBlogForm();
+        }, 2000);
+      }
+    })
   }
 
   goBack() {

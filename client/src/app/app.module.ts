@@ -14,6 +14,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AuthGuradService } from './guards/auth.guard';
 import { NoAuthGuradService } from './guards/noauth.guard';
+import { BlogService } from "./services/blog.service";
 
 
 
@@ -40,7 +41,7 @@ import { BlogComponent } from './components/blog/blog.component';
     ModalModule.forRoot(),
     BootstrapModalModule
   ],
-  providers: [AuthService, AuthGuradService, NoAuthGuradService],
+  providers: [AuthService, AuthGuradService, NoAuthGuradService, BlogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
